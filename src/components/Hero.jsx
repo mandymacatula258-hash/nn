@@ -38,15 +38,7 @@ export default function Hero() {
           built for those who refuse to compromise.
         </p>
 
-        <div className="hero__cta-group" ref={ctaRef}>
-          <a href="#shop" className="hero__btn hero__btn--primary">
-            <span>Get Started</span>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <path d="M3 9H15M15 9L9.5 3.5M15 9L9.5 14.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
-          <a href="#about" className="hero__btn hero__btn--ghost">Learn More</a>
-        </div>
+       
       </div>
 
       <div className="hero__scroll-indicator" aria-hidden="true">
