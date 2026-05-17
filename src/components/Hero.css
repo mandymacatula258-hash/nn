@@ -1,0 +1,176 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  animation: heroBgDrift 18s ease-in-out infinite alternate;
+}
+@keyframes heroBgDrift {
+  from { transform: scale(1.00); }
+  to   { transform: scale(1.06); }
+}
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.25) 100%);
+  z-index: 1;
+}
+.hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.hero__animate-in {
+  animation: heroFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero__badge {
+  display: inline-block;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.45);
+  padding: 7px 16px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  opacity: 0;
+}
+.hero__heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(52px, 8.5vw, 110px);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: #fff;
+  opacity: 0;
+}
+.hero__heading-accent {
+  color: transparent;
+  -webkit-text-stroke: 2px #fff;
+}
+.hero__sub {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 500;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.65;
+  color: rgba(255,255,255,0.72);
+  max-width: 420px;
+  opacity: 0;
+}
+.hero__cta-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+}
+.hero__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.hero__btn--primary {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #fff;
+}
+.hero__btn--primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  z-index: 0;
+}
+.hero__btn--primary:hover::before { transform: scaleX(1); }
+.hero__btn--primary:hover { color: #fff; border-color: #000; }
+.hero__btn--primary span,
+.hero__btn--primary svg { position: relative; z-index: 1; }
+.hero__btn--primary:hover svg { transform: translateX(5px); }
+.hero__btn--ghost {
+  background-color: transparent;
+  color: rgba(255,255,255,0.85);
+  border: 2px solid rgba(255,255,255,0.4);
+}
+.hero__btn--ghost:hover {
+  background-color: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.75);
+  color: #fff;
+}
+.hero__scroll-indicator {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: heroFadeUp 1s 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero__scroll-line {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.7));
+  animation: scrollLinePulse 2s ease-in-out infinite;
+}
+@keyframes scrollLinePulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+.hero__scroll-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+@media (max-width: 768px) {
+  .hero__content { padding: 0 24px; align-items: center; text-align: center; }
+  .hero__cta-group { justify-content: center; }
+}
+@media (max-width: 480px) {
+  .hero__cta-group { flex-direction: column; width: 100%; }
+  .hero__btn { width: 100%; justify-content: center; }
+}

@@ -1,0 +1,328 @@
+/* Support.css — Combined dark Impaq Optics aesthetic */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&family=Barlow:wght@400;500;600&display=swap');
+
+* { box-sizing: border-box; }
+
+.sp-page {
+  min-height: 100vh;
+  background: #0d0d0d;
+  color: #e8e8e8;
+  font-family: 'Barlow', 'Segoe UI', Arial, sans-serif;
+}
+
+/* ── Hero ── */
+.sp-hero {
+  position: relative;
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0d0d0d;
+}
+
+.sp-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 60%, rgba(220, 70, 20, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 30% 40%, rgba(180, 50, 10, 0.12) 0%, transparent 60%);
+}
+
+.sp-hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 80px 24px 60px;
+  max-width: 760px;
+}
+
+.sp-badge {
+  display: inline-block;
+  background: #c94a1a;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 6px 18px;
+  border-radius: 999px;
+  margin-bottom: 28px;
+}
+
+.sp-hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  margin: 0 0 20px;
+  letter-spacing: -0.01em;
+}
+
+.sp-accent {
+  color: #e85520;
+}
+
+.sp-hero-sub {
+  font-size: 0.95rem;
+  color: #aaa;
+  line-height: 1.7;
+  margin: 0 0 36px;
+}
+
+/* ── Contact Cards ── */
+.sp-contact {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
+.sp-contact-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.sp-contact-card:hover {
+  border-color: #e85520;
+  transform: translateY(-2px);
+}
+
+.sp-contact-icon {
+  font-size: 2rem;
+  margin-bottom: 4px;
+}
+
+.sp-contact-card strong {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.sp-contact-detail {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.sp-contact-sub {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* ── Section Shared ── */
+.sp-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #e85520;
+  margin-bottom: 10px;
+}
+
+.sp-section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 12px;
+  line-height: 1.1;
+}
+
+.sp-section-sub {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0 0 32px;
+  max-width: 580px;
+  line-height: 1.7;
+}
+
+/* ── Warranty Section ── */
+.sp-warranty-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  border-top: 1px solid #1e1e1e;
+}
+
+/* Tabs */
+.sp-tabs {
+  display: flex;
+  border-bottom: 1px solid #2a2a2a;
+  margin-bottom: 0;
+}
+
+.sp-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 16px 24px;
+  font-size: 0.95rem;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.sp-tab:hover { color: #e8e8e8; }
+
+.sp-tab--active {
+  color: #fff;
+  border-bottom-color: #e85520;
+  font-weight: 600;
+}
+
+/* Panel */
+.sp-panel {
+  background: #141414;
+  border: 1px solid #222;
+  border-top: none;
+  padding: 36px 40px;
+  border-radius: 0 0 12px 12px;
+}
+
+.warranty-body p {
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: #bbb;
+}
+
+.warranty-body a {
+  color: #e85520;
+  text-decoration: none;
+}
+.warranty-body a:hover { text-decoration: underline; }
+
+.warranty-body .covers-label {
+  color: #fff;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.warranty-body .exclusion {
+  color: #888;
+  font-style: italic;
+}
+
+.warranty-body .sign-off {
+  color: #aaa;
+  margin-top: 20px;
+  border-top: 1px solid #222;
+  padding-top: 16px;
+}
+
+.warranty-body .sign-off strong {
+  color: #e85520;
+}
+
+.warranty-body ul {
+  margin: 0 0 16px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.warranty-body ul li {
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: #bbb;
+  padding-left: 20px;
+  position: relative;
+}
+
+.warranty-body ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #e85520;
+}
+
+/* ── FAQ Section ── */
+.sp-faq-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+  border-top: 1px solid #1e1e1e;
+}
+
+.sp-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.sp-no-results {
+  color: #666;
+  font-size: 0.9rem;
+  padding: 20px 0;
+}
+
+.sp-faq-item {
+  background: #141414;
+  border: 1px solid #222;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.sp-faq-item:hover,
+.sp-faq-item--open {
+  border-color: #333;
+}
+
+.sp-faq-item--open {
+  border-color: #e85520;
+}
+
+.sp-faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #e8e8e8;
+  gap: 12px;
+}
+
+.sp-faq-chevron {
+  color: #e85520;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.sp-faq-a {
+  padding: 0 22px 18px;
+  font-size: 0.88rem;
+  color: #999;
+  line-height: 1.75;
+  border-top: 1px solid #1e1e1e;
+  padding-top: 14px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .sp-contact { grid-template-columns: 1fr; }
+  .sp-hero-title { font-size: 2.8rem; }
+  .sp-panel { padding: 20px 18px; }
+  .sp-footer { padding: 40px 20px 32px; }
+  .sp-footer-inner { gap: 28px; }
+  .sp-warranty-section,
+  .sp-faq-section { padding: 40px 16px; }
+}

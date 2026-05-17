@@ -1,0 +1,122 @@
+.contact__hero {
+  position: relative;
+  height: 55vh;
+  min-height: 360px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+.contact__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.15) 100%);
+}
+
+.contact__hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 48px 80px;
+}
+
+.contact__hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 8vw, 96px);
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  color: #fff;
+  line-height: 1;
+  font-style: italic;
+}
+
+.contact__body {
+  background: #f5f5f5;
+  padding: 72px 40px;
+}
+
+.contact__body-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.contact__intro {
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  color: #737373;
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: #e5e5e5;
+  border: 2px solid #e5e5e5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.contact__card {
+  background: #fff;
+  padding: 36px 28px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  transition: background 0.2s ease;
+}
+
+.contact__card:hover {
+  background: #fafafa;
+}
+
+.contact__card-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact__card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact__card-title {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #000;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.contact__card-detail {
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  color: #737373;
+  line-height: 1.5;
+}
+
+.contact__card-label {
+  font-weight: 600;
+  color: #000;
+}
+
+@media (max-width: 1024px) {
+  .contact__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .contact__hero-content { padding: 32px 24px; }
+  .contact__body { padding: 48px 20px; }
+  .contact__grid { grid-template-columns: 1fr; }
+}

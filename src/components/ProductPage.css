@@ -1,0 +1,220 @@
+/* ── ProductPage.css ───────────────────────────────────────────────────────── */
+
+.pp {
+  background: #0a0a0a;
+  color: #f0f0f0;
+  min-height: 100vh;
+}
+
+/* ── HERO ──────────────────────────────────────────────────────────────────── */
+
+.pp-hero {
+  position: relative;
+  padding: 120px 48px 80px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.pp-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.pp-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.pp-hero-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #888;
+  margin: 0 0 20px;
+}
+
+.pp-hero-title {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0 0 24px;
+  color: #fff;
+}
+
+.pp-hero-sub {
+  font-size: 1rem;
+  color: #aaa;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.pp-hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 480px;
+  margin: 64px auto 0;
+  color: #444;
+  font-size: 0.75rem;
+}
+
+.pp-hero-rule span:first-child,
+.pp-hero-rule span:last-child {
+  flex: 1;
+  height: 1px;
+  background: #333;
+  display: block;
+}
+
+/* ── STATUS ────────────────────────────────────────────────────────────────── */
+
+.pp-status {
+  text-align: center;
+  padding: 4rem;
+  color: #666;
+  width: 100%;
+}
+
+/* ── GRID ──────────────────────────────────────────────────────────────────── */
+
+.pp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2px;
+  padding: 0 0 120px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── CARD ──────────────────────────────────────────────────────────────────── */
+
+.pp-card {
+  background: #111;
+  border: 1px solid #1e1e1e;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease var(--delay, 0s), transform 0.6s ease var(--delay, 0s);
+}
+
+.pp-card--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pp-card-media {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #181818;
+}
+
+.pp-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.pp-card:hover .pp-card-img {
+  transform: scale(1.04);
+}
+
+.pp-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.pp-card-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #fff;
+  color: #000;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  z-index: 2;
+}
+
+/* ── CARD BODY ─────────────────────────────────────────────────────────────── */
+
+.pp-card-body {
+  padding: 28px 28px 36px;
+}
+
+.pp-card-name {
+  font-size: 1.35rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 0 0 8px;
+  line-height: 1.1;
+}
+
+.pp-card-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 12px;
+}
+
+.pp-card-desc {
+  font-size: 0.82rem;
+  color: #777;
+  line-height: 1.65;
+  margin: 0 0 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pp-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  padding: 12px 24px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.2s, gap 0.2s;
+}
+
+.pp-card-btn:hover {
+  background: #e0e0e0;
+  gap: 16px;
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .pp-hero {
+    padding: 100px 24px 60px;
+  }
+
+  .pp-grid {
+    grid-template-columns: 1fr;
+    padding-bottom: 80px;
+  }
+
+  .pp-card-body {
+    padding: 24px 20px 32px;
+  }
+}
