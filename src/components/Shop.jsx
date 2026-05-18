@@ -1,8 +1,10 @@
 ﻿import { useState, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useCart } from "../context/CartContext"
-import { db } from "../firebase"
-import { collection, getDocs } from "firebase/firestore"
+import { db, auth } from "../firebase"
+import {
+  collection, getDocs, addDoc, query, where, serverTimestamp, onSnapshot
+} from "firebase/firestore"
 import "./Shop.css"
 
 import product1 from '../assets/1.png'
@@ -12,7 +14,6 @@ import product4 from '../assets/4.png'
 import product5 from '../assets/5.png'
 import product6 from '../assets/6.png'
 
-// Match product name keywords to local asset images
 const getLocalImage = (name = "") => {
   const n = name.toLowerCase()
   if (n.includes("fa") || n.includes("18×22") || n.includes("18x22")) return product1
@@ -21,13 +22,113 @@ const getLocalImage = (name = "") => {
   if (n.includes("dcr"))    return product4
   if (n.includes("tauron")) return product5
   if (n.includes("ctr"))    return product6
-  return product1 // default fallback
+  return product1
 }
 
+// ── Reservation Modal ────────────────────────────────────────────────────────
+function ReserveModal({ product, onClose, onSuccess }) {
+  const navigate = useNavigate()
+  const [form, setForm]       = useState({ date: "", time: "", notes: "" })
+  const [loading, setLoading] = useState(false)
+  const [error, setError]     = useState("")
+
+  const minDate = new Date()
+  minDate.setDate(minDate.getDate() + 1)
+  const minDateStr = minDate.toISOString().split("T")[0]
+
+  const handleSubmit = async () => {
+    const user = auth.currentUser
+    if (!user) { navigate("/login"); return }
+    if (!form.date || !form.time) { setError("Please select a date and time."); return }
+
+    setLoading(true)
+    setError("")
+    try {
+      await addDoc(collection(db, "reservations"), {
+        uid:         user.uid,
+        email:       user.email,
+        displayName: user.displayName || "",
+        productId:   product.id,
+        productName: product.name,
+        date:        form.date,
+        time:        form.time,
+        notes:       form.notes,
+        status:      "pending",
+        createdAt:   serverTimestamp(),
+      })
+      onSuccess(product.id)
+      onClose()
+    } catch (e) {
+      setError("Failed to submit. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="res-overlay" onClick={onClose}>
+      <div className="res-modal" onClick={e => e.stopPropagation()}>
+        <div className="res-modal__header">
+          <h3>📅 Reserve for In-Store Testing</h3>
+          <button className="res-modal__close" onClick={onClose}>✕</button>
+        </div>
+
+        <p className="res-modal__product">{product.name}</p>
+
+        <p className="res-modal__info">
+          Visit our store to try this product before you buy. Pick a date and time — our team will confirm your slot.
+        </p>
+
+        <div className="res-field">
+          <label>Preferred Date *</label>
+          <input
+            type="date"
+            value={form.date}
+            min={minDateStr}
+            onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
+          />
+        </div>
+
+        <div className="res-field">
+          <label>Preferred Time *</label>
+          <input
+            type="time"
+            value={form.time}
+            onChange={e => setForm(f => ({ ...f, time: e.target.value }))}
+          />
+          <span className="res-field__hint">Store hours: 9:00 AM – 6:00 PM</span>
+        </div>
+
+        <div className="res-field">
+          <label>Notes (optional)</label>
+          <textarea
+            rows={3}
+            placeholder="Features you want to test, questions for our staff..."
+            value={form.notes}
+            onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+          />
+        </div>
+
+        {error && <p className="res-error">{error}</p>}
+
+        <div className="res-modal__actions">
+          <button className="res-cancel" onClick={onClose}>Cancel</button>
+          <button className="res-submit" onClick={handleSubmit} disabled={loading}>
+            {loading ? "Submitting..." : "Submit Reservation"}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Main Shop Component ──────────────────────────────────────────────────────
 export default function Shop() {
-  const [cartOpen, setCartOpen] = useState(false)
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [cartOpen, setCartOpen]       = useState(false)
+  const [products, setProducts]       = useState([])
+  const [loading, setLoading]         = useState(true)
+  const [reserveProduct, setReserveProduct] = useState(null)  // product being reserved
+  const [userReservations, setUserReservations] = useState({}) // { productId: status }
   const { cartItems, addToCart, removeFromCart, updateQty, totalPrice, totalItems } = useCart()
   const navigate = useNavigate()
 
@@ -41,8 +142,7 @@ export default function Shop() {
           return {
             id: d.id,
             ...docData,
-            // Use Firestore image URL if valid, otherwise fall back to local asset
-            image: docData.image && docData.image.startsWith("http")
+            image: docData.image && (docData.image.startsWith("http") || docData.image.startsWith("data:"))
               ? docData.image
               : getLocalImage(docData.name),
           }
@@ -57,8 +157,69 @@ export default function Shop() {
     fetchProducts()
   }, [])
 
+  // Real-time listener for current user's reservations
+  // Updates the card UI instantly when admin approves/rejects
+  useEffect(() => {
+    const user = auth.currentUser
+    if (!user) return
+
+    const q = query(
+      collection(db, "reservations"),
+      where("uid", "==", user.uid)
+    )
+
+    const unsub = onSnapshot(q, (snap) => {
+      const map = {}
+      snap.docs.forEach(d => {
+        const data = d.data()
+        map[data.productId] = data.status
+      })
+      setUserReservations(map)
+    })
+
+    return () => unsub()
+  }, [])
+
+  // Called after successful reservation submission
+  const handleReserveSuccess = (productId) => {
+    setUserReservations(prev => ({ ...prev, [productId]: "pending" }))
+  }
+
+  const getReserveBtnLabel = (productId) => {
+    const status = userReservations[productId]
+    if (status === "pending")  return "🕐 Pending Approval"
+    if (status === "approved") return "✅ Reservation Approved"
+    if (status === "rejected") return "❌ Not Approved"
+    return "📅 Reserve to Try"
+  }
+
+  const getReserveBtnClass = (productId) => {
+    const status = userReservations[productId]
+    if (status === "pending")  return "products__card-reserve products__card-reserve--pending"
+    if (status === "approved") return "products__card-reserve products__card-reserve--approved"
+    if (status === "rejected") return "products__card-reserve products__card-reserve--rejected"
+    return "products__card-reserve"
+  }
+
+  const handleReserveClick = (product) => {
+    const status = userReservations[product.id]
+    // Allow re-reserve only if rejected; otherwise just open modal for new reservations
+    if (status === "pending" || status === "approved") return
+    setReserveProduct(product)
+  }
+
   return (
     <div className="shop">
+
+      {/* Reservation Modal */}
+      {reserveProduct && (
+        <ReserveModal
+          product={reserveProduct}
+          onClose={() => setReserveProduct(null)}
+          onSuccess={handleReserveSuccess}
+        />
+      )}
+
       <button className="shop__cart-fab" onClick={() => setCartOpen(true)}>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
@@ -95,7 +256,6 @@ export default function Shop() {
                       className="products__card-img"
                       draggable={false}
                       onError={(e) => {
-                        // If image URL fails to load, fall back to local asset
                         e.target.onerror = null
                         e.target.src = getLocalImage(product.name)
                       }}
@@ -106,12 +266,6 @@ export default function Shop() {
                   <p className="products__card-name">{product.name}</p>
                   <p className="products__card-price">${Number(product.price).toFixed(2)}</p>
                   <div className="products__card-actions">
-                    <Link to={product.link || "#"} className="products__card-link">
-                      Learn More
-                      <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                        <path d="M3 9H15M15 9L9.5 3.5M15 9L9.5 14.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </Link>
                     <button
                       className="products__card-add"
                       onClick={() => { addToCart(product); setCartOpen(true) }}
@@ -119,6 +273,15 @@ export default function Shop() {
                       + Add to Cart
                     </button>
                   </div>
+
+                  {/* ── Reserve Button ── */}
+                  <button
+                    className={getReserveBtnClass(product.id)}
+                    onClick={() => handleReserveClick(product)}
+                  >
+                    {getReserveBtnLabel(product.id)}
+                  </button>
+
                 </div>
               </div>
             ))}

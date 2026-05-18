@@ -73,15 +73,16 @@
 .products__title { font-size: 2rem; font-weight: 700; }
 .products__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
 .products__card {
-  background: #1a1a1a; border-radius: 10px; overflow: hidden;
+  background: #111; border-radius: 10px; overflow: hidden;
   display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #222;
 }
 .products__card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-.products__card-top { padding: 1.25rem 1.25rem 0; background: #111; }
-.products__card-category { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #c8a96e; }
+.products__card-top { padding: 1.25rem 1.25rem 1.25rem; background: #111; border-radius: 10px 10px 0 0; }
+.products__card-category { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #c8a96e; margin-bottom: 0.5rem; display: block; }
 .products__card-img-wrap { display: flex; align-items: center; justify-content: center; padding: 1rem 0; height: 180px; }
 .products__card-img { max-height: 100%; max-width: 100%; object-fit: contain; }
-.products__card-bottom { padding: 1rem 1.25rem 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.products__card-bottom { padding: 1rem 1.25rem 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; background: #1a1a1a; border-top: 1px solid #2a2a2a; }
 .products__card-name { font-size: 0.9rem; font-weight: 500; line-height: 1.4; flex: 1; }
 .products__card-price { font-size: 1rem; font-weight: 700; color: #c8a96e; }
 .products__card-actions { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-top: 0.25rem; }
@@ -93,6 +94,163 @@
   cursor: pointer; transition: background 0.2s; white-space: nowrap;
 }
 .products__card-add:hover { background: #b8924f; }
+
+.products__card-reserve-wrap {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.products__card-reserve-wrap .products__card-reserve {
+  flex: 1;
+}
+.products__card-reserve-cancel {
+  background: transparent;
+  border: 1.5px solid #555;
+  color: #888;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.products__card-reserve-cancel:hover {
+  border-color: #e53e3e;
+  color: #e53e3e;
+  background: rgba(229,62,62,0.1);
+}
+
+/* ── Reserve to Try Button ── */
+.products__card-reserve {
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  background: transparent;
+  color: #c8a96e;
+  border: 1.5px solid #c8a96e;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+.products__card-reserve:hover {
+  background: #c8a96e;
+  color: #111;
+}
+
+/* Pending — muted gold, not clickable */
+.products__card-reserve--pending {
+  border-color: #a07840;
+  color: #a07840;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+.products__card-reserve--pending:hover {
+  background: transparent;
+  color: #a07840;
+}
+
+/* Approved — green */
+.products__card-reserve--approved {
+  border-color: #38a169;
+  color: #38a169;
+  cursor: not-allowed;
+}
+.products__card-reserve--approved:hover {
+  background: transparent;
+  color: #38a169;
+}
+
+/* Rejected — red, clickable to re-reserve */
+.products__card-reserve--rejected {
+  border-color: #e53e3e;
+  color: #e53e3e;
+  cursor: pointer;
+}
+.products__card-reserve--rejected:hover {
+  background: #e53e3e;
+  color: #fff;
+}
+
+/* ── Reservation Modal ── */
+.res-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.res-modal {
+  background: #1a1a1a; color: #f0f0f0;
+  border-radius: 12px; padding: 2rem;
+  width: 100%; max-width: 460px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.res-modal__header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.res-modal__header h3 {
+  font-size: 1.1rem; font-weight: 700; margin: 0;
+}
+.res-modal__close {
+  background: none; border: none; color: #888;
+  font-size: 1.1rem; cursor: pointer; padding: 4px 8px;
+  border-radius: 4px; transition: color 0.2s;
+}
+.res-modal__close:hover { color: #fff; }
+.res-modal__product {
+  font-size: 0.9rem; font-weight: 600; color: #c8a96e; margin: 0;
+}
+.res-modal__info {
+  font-size: 0.82rem; color: #aaa; line-height: 1.5; margin: 0;
+}
+.res-field {
+  display: flex; flex-direction: column; gap: 0.35rem;
+}
+.res-field label {
+  font-size: 0.8rem; font-weight: 600; color: #ccc;
+}
+.res-field input,
+.res-field textarea {
+  background: #111; border: 1px solid #333; border-radius: 6px;
+  color: #f0f0f0; font-size: 0.88rem; padding: 0.55rem 0.75rem;
+  outline: none; transition: border-color 0.2s;
+  font-family: inherit;
+}
+.res-field input:focus,
+.res-field textarea:focus { border-color: #c8a96e; }
+.res-field textarea { resize: vertical; }
+.res-field__hint { font-size: 0.75rem; color: #888; }
+.res-error {
+  font-size: 0.82rem; color: #e53e3e; margin: 0;
+}
+.res-modal__actions {
+  display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 0.5rem;
+}
+.res-cancel {
+  padding: 0.55rem 1.2rem; background: transparent;
+  border: 1px solid #444; color: #aaa; border-radius: 6px;
+  font-size: 0.88rem; cursor: pointer; transition: border-color 0.2s, color 0.2s;
+}
+.res-cancel:hover { border-color: #888; color: #fff; }
+.res-submit {
+  padding: 0.55rem 1.4rem; background: #c8a96e;
+  border: none; color: #111; border-radius: 6px;
+  font-size: 0.88rem; font-weight: 700; cursor: pointer;
+  transition: background 0.2s;
+}
+.res-submit:hover { background: #b8924f; }
+.res-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 .products__footer { text-align: center; margin-top: 3rem; }
 .products__footer-tagline { color: #c8a96e; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
 .products__footer-title { font-size: 1.5rem; font-weight: 600; }

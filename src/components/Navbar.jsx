@@ -10,7 +10,6 @@ const ADMIN_EMAIL = "mandymacatula258@gmail.com"
 const NAV_LINKS = [
   { label: "Home",       to: "/"        },
   { label: "Support",    to: "support" },
-  { label: "Product",    to: "/product" },
   { label: "Shop",       to: "/shop"    },
   { label: "About Us",   to: "/about"   },
   { label: "Contact Us", to: "/contact" },
