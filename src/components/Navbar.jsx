@@ -9,8 +9,8 @@ const ADMIN_EMAIL = "mandymacatula258@gmail.com"
 
 const NAV_LINKS = [
   { label: "Home",       to: "/"        },
-  { label: "Support",    to: "support" },
-  { label: "Shop",       to: "/shop"    },
+  { label: "Support",    to: "/support" },
+  { label: "Shop",       to: "/shop",   authOnly: true },
   { label: "About Us",   to: "/about"   },
   { label: "Contact Us", to: "/contact" },
 ]
@@ -98,9 +98,12 @@ function NavbarAuthMobile({ onClose }) {
 }
 
 export default function Navbar() {
+  const { currentUser } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+
+  const visibleLinks = NAV_LINKS.filter(link => !link.authOnly || currentUser)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10)
@@ -154,7 +157,7 @@ export default function Navbar() {
       <nav className="navbar__inner">
         <Link to="/" className="navbar__logo" aria-label="IMPAQ OPTICS Home">IMPAQ OPTICS</Link>
         <ul className="navbar__links" role="menubar">
-          {NAV_LINKS.map((link) => (
+          {visibleLinks.map((link) => (
             <li key={link.label} role="none">{renderLink(link)}</li>
           ))}
           <li role="none"><NavbarAuth /></li>
@@ -172,7 +175,7 @@ export default function Navbar() {
       </nav>
       <div className={"navbar__mobile-menu" + (menuOpen ? " navbar__mobile-menu--open" : "")}>
         <ul>
-          {NAV_LINKS.map((link) => (
+          {visibleLinks.map((link) => (
             <li key={link.label}>{renderMobileLink(link)}</li>
           ))}
           <NavbarAuthMobile onClose={() => setMenuOpen(false)} />
