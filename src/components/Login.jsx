@@ -74,7 +74,7 @@ export default function Login() {
 
         <form className="auth__form" onSubmit={handleSubmit}>
           <div className="auth__field">
-            <input className="auth__input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email or phone number" required />
+            <input className="auth__input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email address" required />
           </div>
           <div className="auth__field">
             <input className="auth__input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
